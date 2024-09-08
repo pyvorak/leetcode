@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<ListNode*> splitListToParts(ListNode* head, int k) {
-        vector<ListNode*> ans(k, new ListNode(0));
+        vector<ListNode*> ans(k);
         ListNode* cur = head;
         int n = 0;
 
@@ -12,26 +12,21 @@ public:
 
         cur = head;
         int avg = n / k;
+        int extra = n % k;
 
         for (int i = 0; i<k; i++){
-            ans[i]->next = cur;
-            
+            ans[i] = cur;
             int cnt = avg;
 
-            if (cnt * (k-i) < n--) cnt++;
+            if (extra-- > 0) cnt++;
 
-            while (--cnt && cur) {
-                cur = cur->next;
-                n--;
-            }
+            while (--cnt && cur) cur = cur->next;
 
             if (cur) {
                 ListNode* prev = cur;
                 cur = cur->next;
                 prev->next = nullptr;
             }
-
-            ans[i] = ans[i]->next;
         }
         return ans;
     }
