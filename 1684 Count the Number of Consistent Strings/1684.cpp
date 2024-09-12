@@ -1,29 +1,34 @@
 class Solution {
-public:
-    int countConsistentStrings(string allowed, vector<string>& words) {
-        vector<bool> valid(26, false);
-        
+    vector<bool> valid;
+
+    void updateValid(string allowed){
+        valid = vector<bool>(26, false);
+        for (int i = 0; i<valid.size(); i++){
+            valid[i] = false;
+        }
         for (char c: allowed){
             valid[c - 'a'] = true;
         }
+    }
 
-        int ans = 0;
-
-        for (string word: words){
-            bool is_consistent = true;
-            
-            for (char c: word){
-                if (!valid[c - 'a']){
-                    is_consistent = false;
-                    break;
-                }
+    bool isConsistent(string word){
+        for (char c: word){
+            if (!valid[c - 'a']){
+                return false;
             }
+        }
+        return true;
+    }
 
-            if (is_consistent){
+public:
+    int countConsistentStrings(string allowed, vector<string>& words) {
+        updateValid(allowed);
+        int ans = 0;
+        for (string word: words){
+            if (isConsistent(word)){
                 ans++;
             }
         }
-
         return ans;
     }
 };
