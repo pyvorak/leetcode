@@ -1,14 +1,14 @@
 class Solution:
     def areSentencesSimilar(self, s1: str, s2: str) -> bool:
-        w1 = s1.split()
-        w2 = s2.split()
-        n, m = len(w1), len(w2)
-        i, j = 0, 0
+        w1 = deque(s1.split())
+        w2 = deque(s2.split())
+        
+        while w1 and w2 and w1[0] == w2[0]:
+            w1.popleft()
+            w2.popleft()
 
-        while i < n and i < m and w1[i] == w2[i]:
-            i += 1
+        while w1 and w2 and w1[-1] == w2[-1]:
+            w1.pop()
+            w2.pop()
 
-        while j < n-i and j < m-i and w1[n-1-j] == w2[m-1-j]:
-            j += 1
-
-        return i + j == min(n, m)
+        return not w1 or not w2
