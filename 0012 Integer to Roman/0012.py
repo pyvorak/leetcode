@@ -19,8 +19,8 @@ class Solution:
         ans = ""
 
         for val, symbol in roman:
-            while num >= val:
-                ans += symbol
-                num -= val
-
+            if num >= val:
+                q, num = divmod(num, val)
+                ans += symbol * q
+                
         return ans
