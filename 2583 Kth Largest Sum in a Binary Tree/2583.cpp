@@ -1,14 +1,12 @@
 class Solution {
 public:
     long long kthLargestLevelSum(TreeNode* root, int k) {
-        priority_queue<long long> pq;
+        vector<long long> v;
         queue<TreeNode*> q;
-
         q.push(root);
 
         while (!q.empty()){
             long long sum = 0;
-
             queue<TreeNode*> nextQ;
 
             while (!q.empty()){
@@ -21,14 +19,15 @@ public:
                 sum += cur->val;
             }
 
-            pq.push(sum);
+            v.push_back(sum);
             q = nextQ;
         } 
 
-        while (--k && !pq.empty()){
-            pq.pop();
+        if (k <= v.size()){
+            sort(v.begin(), v.end(), greater<>());
+            return v[k-1];
+        } else {
+            return -1;
         }
-
-        return pq.empty() ? -1 : pq.top();
     }
 };
