@@ -1,10 +1,9 @@
 class Solution:
     def longestMonotonicSubarray(self, nums: List[int]) -> int:
         ans = 1
-        n = len(nums)    
         inc, dec = 0, 0    
 
-        for i in range(1, n):
+        for i in range(1, len(nums)):
             if nums[i-1] >= nums[i]: 
                 inc = i
             if nums[i-1] <= nums[i]: 
