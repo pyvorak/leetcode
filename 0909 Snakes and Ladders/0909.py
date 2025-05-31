@@ -1,27 +1,34 @@
 class Solution:
     def snakesAndLadders(self, board: List[List[int]]) -> int:
-        n = len(board)
+        n = len(board) 
 
-        def get_next_square(position):
-            q, r = divmod(position-1, n)
-            row = n - 1 - q
-            col = n - 1 - r if q % 2 != 0 else r
-            return position if board[row][col] == -1 else board[row][col] 
+        b = [-1]
+        flip = False
 
-        pq = [(0, 1)]
-        seen = [False]*(n*n+1)
+        for row in board[::-1]:
+            if flip:
+                b.extend(row[::-1])
+            else:
+                b.extend(row)
+            flip = not flip
+        
+        b = [x if x != -1 else i for i, x in enumerate(b)]
 
+        pq = [(0, -1)]
+        seen = [False] * (n*n+1)
+        n2 = n*n
+    
         while pq:
-            moves, position = heappop(pq)
-            
-            if position == n*n:
-                return moves
+            cnt, x = heappop(pq)
+            x = -x
 
-            for next_position in range(position+1, min(position+6, n*n) + 1):
-                next_square = get_next_square(next_position)
-                
-                if not seen[next_square]:
-                    seen[next_square] = True
-                    heappush(pq, (moves+1, next_square))
+            if x == n2:
+                return cnt
 
-        return -1 
+            for move in range(x+1, min(x+6, n2)+1):
+                move = b[move]
+                if not seen[move]:
+                    seen[move] = True
+                    heappush(pq, [cnt+1, -move])
+
+        return -1
