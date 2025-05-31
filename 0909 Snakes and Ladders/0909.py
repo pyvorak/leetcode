@@ -7,25 +7,24 @@ class Solution:
 
         for row in board[::-1]:
             if flip:
-                b.extend(row[::-1])
-            else:
-                b.extend(row)
+                row = row[::-1]
+            b.extend(row)
             flip = not flip
         
         b = [x if x != -1 else i for i, x in enumerate(b)]
 
         pq = [(0, -1)]
-        seen = [False] * (n*n+1)
-        n2 = n*n
+        ans = n*n
+        seen = [False] * (ans+1)
     
         while pq:
             cnt, x = heappop(pq)
             x = -x
 
-            if x == n2:
+            if x == ans:
                 return cnt
 
-            for move in range(x+1, min(x+6, n2)+1):
+            for move in range(x+1, min(x+6, ans)+1):
                 move = b[move]
                 if not seen[move]:
                     seen[move] = True
